@@ -1,0 +1,9 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "dist/hello-world.wasm",
+      "sha1": "1c163f355b87e6285404cc6f407d3b785df67792"
+    }
+  ]
+}
