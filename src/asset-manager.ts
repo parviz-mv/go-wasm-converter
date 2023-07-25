@@ -45,6 +45,7 @@ export const AssetsManager = {
         `${src}/hello-world.wasm`,
         `${dest}/hello-world.wasm`,
       );
+      await FileSystem.cpAsset(`${src}/main.wasm`, `${dest}/main.wasm`);
     } catch (e) {
       console.error(e);
     }
@@ -59,6 +60,7 @@ export const AssetsManager = {
         `${src}/hello-world.wasm`,
         `${dest}/hello-world.wasm`,
       );
+      await FileSystem.cp(`${src}/main.wasm`, `${dest}/main.wasm`);
     } catch (e) {
       console.error(e);
     }

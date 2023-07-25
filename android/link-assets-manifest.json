@@ -4,6 +4,10 @@
     {
       "path": "dist/hello-world.wasm",
       "sha1": "1c163f355b87e6285404cc6f407d3b785df67792"
+    },
+    {
+      "path": "dist/main.wasm",
+      "sha1": "fc0cc0dab2fac2bd63c4ed84e6bd9e3a645dcfa6"
     }
   ]
 }
