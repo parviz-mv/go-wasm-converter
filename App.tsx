@@ -1,10 +1,12 @@
 import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
 import {useEffect, useState} from 'react';
 import * as WebAssembly from 'react-native-webassembly';
-import axios from 'axios';
 import {AssetsManager} from './src/asset-manager';
 import {Dirs, FileSystem} from 'react-native-file-access';
 import {Base64Url} from './src/base64url';
+import {Buffer} from 'buffer';
+import axios from 'axios';
+import * as RNFS from 'react-native-fs';
 
 const styles = StyleSheet.create({
   container: {
@@ -72,44 +74,73 @@ export default function App() {
 
   async function wasmTest() {
     try {
-      const response = await axios({
-        url: 'https://github.com/torch2424/wasm-by-example/raw/master/examples/hello-world/demo/assemblyscript/hello-world.wasm',
-        method: 'get',
-        responseType: 'arraybuffer',
-      });
+      // const response = await axios({
+      //   url: 'https://github.com/torch2424/wasm-by-example/raw/master/examples/hello-world/demo/assemblyscript/hello-world.wasm',
+      //   method: 'get',
+      //   responseType: 'arraybuffer',
+      // });
 
-      // console.log('response', response.data);
+      // // console.log('response', response.data);
 
-      const x = await WebAssembly.instantiate<{
-        add: (a: number, b: number) => number;
-      }>(response.data);
-      const firstResult = x.instance.exports.add(200, 300);
-      console.log('first result  = ', firstResult);
-      if (firstResult === 500) {
-        setResult1(true);
-      } else {
-        setResult1(false);
-      }
+      // const x = await WebAssembly.instantiate<{
+      //   add: (a: number, b: number) => number;
+      // }>(response.data);
+      // const firstResult = x.instance.exports.add(200, 300);
+      // console.log('first result  = ', firstResult);
+      // if (firstResult === 500) {
+      //   setResult1(true);
+      // } else {
+      //   setResult1(false);
+      // }
+
+      // --------------------------------------------------------------
+      // await AssetsManager.copyAssets();
+      // const wasmBinPath = `${Dirs.DocumentDir}/wasmBin`;
+      // const result = await FileSystem.readFile(
+      //   `${wasmBinPath}/hello-world.wasm`,
+      //   'base64',
+      // );
+      // console.log('result', result);
+      // const buffer = Base64Url.toBuffer(result);
+      // console.log('buffer', buffer.length);
+
+      // const module = await WebAssembly.instantiate<{
+      //   add: (a: number, b: number) => number;
+      // }>(new Uint8Array(buffer));
+      // const secondResult = module.instance.exports.add(300, 200);
+      // console.log('second result = ', secondResult);
+
+      // if (secondResult === 500) {
+      //   setResult2(true);
+      // } else {
+      //   setResult2(false);
+      // }
       // --------------------------------------------------------------
 
       await AssetsManager.copyAssets();
       const wasmBinPath = `${Dirs.DocumentDir}/wasmBin`;
       await AssetsManager.listFiles(wasmBinPath);
+
       const result = await FileSystem.readFile(
-        `${wasmBinPath}/hello-world.wasm`,
+        `${wasmBinPath}/main.wasm`,
         'base64',
       );
+      const response = await axios({
+        url: 'https://github.com/parviz-mv/go-wasm-converter/blob/main/dist/main.wasm',
+        method: 'get',
+        responseType: 'arraybuffer',
+      });
+      console.log('response', response.data);
+
       const buffer = Base64Url.toBuffer(result);
-      const module = await WebAssembly.instantiate<{
+      console.log('buffer', buffer.length);
+
+      const wasmModule = await WebAssembly.instantiate<{
         add: (a: number, b: number) => number;
-      }>(new Uint8Array(buffer));
-      const secondResult = module.instance.exports.add(300, 200);
-      console.log('second result = ', secondResult);
-      if (secondResult === 500) {
-        setResult2(true);
-      } else {
-        setResult2(false);
-      }
+      }>(new Uint8Array(response.data));
+
+      const secondResult = wasmModule.instance.exports.add(1, 2);
+      console.log('secondResult', secondResult);
 
       console.log('-----------------------------------------------');
     } catch (e) {

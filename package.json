@@ -1,7 +1,6 @@
 {
   "name": "wasmexample",
-  "version": "0.0.1",
-  "private": true,
+  "version": "0.0.2",
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -10,13 +9,15 @@
     "test": "jest",
     "bootstrap": "npm install",
     "pod-install": "npx pod-install",
-    "pods-remove": "rm -rf ./ios/Podfile.lock ./ios/Pods/ ./ios/build/"
+    "pods-remove": "rm -rf ./ios/Podfile.lock ./ios/Pods/ ./ios/build/",
+    "wasm-build": "sh ./scripts/wasm-build.sh"
   },
   "dependencies": {
     "axios": "^1.4.0",
     "react": "18.2.0",
     "react-native": "0.72.3",
     "react-native-file-access": "^3.0.4",
+    "react-native-fs": "^2.20.0",
     "react-native-webassembly": "^0.3.3"
   },
   "devDependencies": {
